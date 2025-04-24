@@ -13,3 +13,15 @@ class MockResponse:
     def iter_content(self, chunk_size=1):
         # Yield all content in one go
         yield self._content
+
+    def parse_single_test():
+        urls = parse(["https://example.com/file.txt"])
+        assert urls == ["https://example.com/file.txt"]
+        
+    def parse_multiple_test(): 
+        inputs = [
+        "https://foo.com/a.png",
+        "https://bar.org/b.jpg",
+        "http://baz.net/c.zip"
+    ]
+        assert parse(inputs) == inputs
