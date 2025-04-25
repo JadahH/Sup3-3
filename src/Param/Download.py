@@ -21,6 +21,11 @@ def parse(arvg=None):
     )
    return parser.parse(argv).urls
 
+"""
+    Download a single file from the given URL and save it into output_dir.
+    Returns the path to the saved file.
+"""
+
 def download_file(url, output_dir='.'):
     response = requests.get(url, stream=True)
     response.raise_for_status()
