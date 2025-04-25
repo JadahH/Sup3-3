@@ -75,5 +75,21 @@ def download_multithread(urls, output_dir='.'):
 
     return saved
 
-    def main():
-        pass
+def main():
+    urls = parse()
+    
+    start_seq = time.time()
+    download_sequential(urls)
+    seq_duration = time.time() - start_seq
+    
+    start_mt = time.time()
+    
+    download_multithread(urls)
+    mt_duration = time.time() - start_mt
+
+    print(f"Sequential download took {seq_duration:.2f} seconds")
+    print(f"Multithreaded download took {mt_duration:.2f} seconds")
+
+
+if __name__ == "__main__":
+    main()
