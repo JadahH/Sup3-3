@@ -1,4 +1,6 @@
-from Param.Download import parse, download_file, download_sequential, download_multithread
+import downloader
+
+from Param.Download import parse, download_file, download_sequential, download_multithread, main
 
 class MockResponse:
     """A fake requests.Response for testing download_file."""
@@ -60,3 +62,17 @@ class MockResponse:
     saved = download_multithread(urls, output_dir="/out")
     assert set(calls) == set(urls)
     assert set(saved) == {"/tmp/uA", "/tmp/uB", "/tmp/uC", "/tmp/uD"}
+
+    def test_main_prints_timings(monkeypatch, capsys):
+        monkeypatch.setattr(downloader, "parse_args", lambda: ["x1", "x2"])
+        monkeypatch.setattr(downloader, "download_sequential", lambda urls: None)
+        monkeypatch.setattr(downloader, "download_multithreaded", lambda urls: None)
+        
+        times = iter([10.0, 13.0, 20.0, 23.5])
+        monkeypatch.setattr(downloader.time, "time", lambda: next(times))
+        
+        main()
+        captured = capsys.readouterr()
+        out = captured.out.strip().splitlines()
+        assert out[0] == "Sequential download took 3.00 seconds"
+        assert out[1] == "Multithreaded download took 3.50 seconds"
