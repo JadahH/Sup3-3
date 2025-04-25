@@ -74,3 +74,6 @@ def download_multithread(urls, output_dir='.'):
         t.join()
 
     return saved
+
+    def main():
+        pass
