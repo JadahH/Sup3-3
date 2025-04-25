@@ -1,4 +1,4 @@
-from Param.Download import parse, download_file
+from Param.Download import parse, download_file, download_sequential
 
 class MockResponse:
     """A fake requests.Response for testing download_file."""
@@ -35,4 +35,17 @@ class MockResponse:
         with open(out, "rb") as f:
             data = f.read()
         assert data == b"hello world"
+
+    def test_download_sequential(monkeypatch):
+        calls = []
+        def fake_download(url, output_dir="."):
+            calls.append(url)
+            return f"/tmp/{os.path.basename(url)}"
+
+        monkeypatch.setattr(downloader, "download_file", fake_download)
+
+        urls = ["u1", "u2", "u3"]
+        saved = download_sequential(urls, output_dir="/out")
+        assert saved == ["/tmp/u1", "/tmp/u2", "/tmp/u3"]
+        assert calls == urls  # sequential order  
  
