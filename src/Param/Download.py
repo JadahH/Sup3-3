@@ -49,3 +49,6 @@ def download_sequential(urls, output_dir='.'):
      for url in urls:
          saved.append(download_file(url, output_dir))
          return saved        
+     
+def download_multithread():
+    pass
