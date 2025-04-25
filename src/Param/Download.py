@@ -21,3 +21,5 @@ def parse(arvg=None):
     )
    return parser.parse(argv).urls
 
+def download_file():
+   pass
