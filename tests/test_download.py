@@ -1,4 +1,4 @@
-from Param.Download import parse
+from Param.Download import parse, download_file
 
 class MockResponse:
     """A fake requests.Response for testing download_file."""
@@ -25,3 +25,14 @@ class MockResponse:
         "http://baz.net/c.zip"
     ]
         assert parse(inputs) == inputs
+
+    def test_download_file(tmp_path, monkeypatch):
+    # Prepare a dummy response with known content
+        dummy = DummyResponse(b"hello world")
+        monkeypatch.setattr(downloader.requests, "get", lambda url, stream=True: dummy)
+        out = download_file("https://example.com/f.txt", output_dir=str(tmp_path))
+        assert os.path.exists(out)
+        with open(out, "rb") as f:
+            data = f.read()
+        assert data == b"hello world"
+ 
