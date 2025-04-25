@@ -38,3 +38,6 @@ def download_file(url, output_dir='.'):
             if chunk:
                 f.write(chunk)
     return filepath
+
+def download_sequential():
+    pass
