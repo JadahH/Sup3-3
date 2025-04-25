@@ -1,4 +1,4 @@
-from Param.Download import parse, download_file, download_sequential
+from Param.Download import parse, download_file, download_sequential, download_multithread
 
 class MockResponse:
     """A fake requests.Response for testing download_file."""
@@ -49,3 +49,14 @@ class MockResponse:
         assert saved == ["/tmp/u1", "/tmp/u2", "/tmp/u3"]
         assert calls == urls  # sequential order  
  
+    def test_download_multithreaded(monkeypatch):
+        calls = []
+    def fake_download(url, output_dir="."):
+        calls.append(url)
+        return f"/tmp/{os.path.basename(url)}"
+        monkeypatch.setattr(downloader, "download_file", fake_download)
+
+    urls = ["uA", "uB", "uC", "uD"]
+    saved = download_multithread(urls, output_dir="/out")
+    assert set(calls) == set(urls)
+    assert set(saved) == {"/tmp/uA", "/tmp/uB", "/tmp/uC", "/tmp/uD"}
