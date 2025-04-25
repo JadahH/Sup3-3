@@ -75,6 +75,11 @@ def download_multithread(urls, output_dir='.'):
 
     return saved
 
+"""
+    Entry point: parse arguments, run downloads both sequentially and multithread,
+    and print the timing for each.
+"""
+
 def main():
     urls = parse()
     
