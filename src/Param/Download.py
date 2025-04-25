@@ -50,5 +50,23 @@ def download_sequential(urls, output_dir='.'):
          saved.append(download_file(url, output_dir))
          return saved        
      
-def download_multithread():
-    pass
+     
+def download_multithread(urls, output_dir='.'):
+    saved = []
+    lock = threading.Lock()
+
+    def worker(u):
+        path = download_file(u, output_dir)
+        with lock:
+            saved.append(path)
+
+    threads = []
+    for url in urls:
+        t = threading.Thread(target=worker, args=(url,))
+        t.start()
+        threads.append(t)
+
+    for t in threads:
+        t.join()
+
+    return saved
