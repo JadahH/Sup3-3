@@ -1,4 +1,4 @@
-from Download import parse
+from Param.Download import parse
 
 class MockResponse:
     """A fake requests.Response for testing download_file."""

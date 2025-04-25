@@ -5,6 +5,10 @@ import time
 from urllib.parse import urlparse
 import requests
 
+"""
+    Parse command-line arguments and return a list of URLs.
+"""
+
 def parse(arvg=None):
    parser = argparse.ArgumentParser(
         description="Download one or more files by URL, each on its own thread."
