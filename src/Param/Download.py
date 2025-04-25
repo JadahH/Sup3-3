@@ -21,5 +21,15 @@ def parse(arvg=None):
     )
    return parser.parse(argv).urls
 
-def download_file():
-   pass
+def download_file(url, output_dir='.'):
+    response = requests.get(url, stream=True)
+    response.raise_for_status()
+    # Derive a filename from the URL; fallback to 'download' if none
+    path = urlparse(url).path
+    filename = os.path.basename(path) or 'download'
+    filepath = os.path.join(output_dir, filename)
+    with open(filepath, 'wb') as f:
+        for chunk in response.iter_content(chunk_size=8192):
+            if chunk:
+                f.write(chunk)
+    return filepath
