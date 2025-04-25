@@ -39,5 +39,8 @@ def download_file(url, output_dir='.'):
                 f.write(chunk)
     return filepath
 
-def download_sequential():
-    pass
+def download_sequential(urls, output_dir='.'):
+     saved = []
+     for url in urls:
+         saved.append(download_file(url, output_dir))
+         return saved        
